@@ -11,7 +11,7 @@ pipeline {
         }
         stage ("Git checkout") {
             steps {
-                git branch: 'main', url: 'https://github.com/yeshwanthlm/background-remover-python-app.git'
+                git branch: 'main', url: 'https://github.com/tirucloud/background-remover-python-app.git'
             }
         }
         stage("SonarQube Analysis") {
@@ -49,8 +49,8 @@ pipeline {
             steps {
                 script {
                     withDockerRegistry(credentialsId: 'docker') {
-                        sh "docker tag background-remover-python-app amonkincloud/background-remover-python-app:latest"
-                        sh "docker push amonkincloud/background-remover-python-app:latest"
+                        sh "docker tag background-remover-python-app tirucloud/background-remover-python-app:latest"
+                        sh "docker push tirucloud/background-remover-python-app:latest"
                     }
                 }
             }
@@ -59,16 +59,16 @@ pipeline {
             steps {
                 script {
                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker') {
-                       sh 'docker-scout quickview amonkincloud/background-remover-python-app:latest'
-                       sh 'docker-scout cves amonkincloud/background-remover-python-app:latest'
-                       sh 'docker-scout recommendations amonkincloud/background-remover-python-app:latest'
+                       sh 'docker-scout quickview tirucloud/background-remover-python-app:latest'
+                       sh 'docker-scout cves tirucloud/background-remover-python-app:latest'
+                       sh 'docker-scout recommendations tirucloud/background-remover-python-app:latest'
                    }
                 }
             }
         }
         stage ("Deploy to Container") {
             steps {
-                sh 'docker run -d --name background-remover-python-app -p 5100:5100 amonkincloud/background-remover-python-app:latest'
+                sh 'docker run -d --name background-remover-python-app -p 5100:5100 tirucloud/background-remover-python-app:latest'
             }
         }
     }
